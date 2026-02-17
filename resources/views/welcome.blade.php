@@ -8,5 +8,6 @@
 <body>
     <h1>{{ config('app.name') }}</h1>
     <p>Sales invoice management application (CRUD, filtering, file attachments).</p>
+    <p><a href="{{ route('invoices.index') }}">Go to Invoices</a></p>
 </body>
 </html>
