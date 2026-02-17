@@ -26,6 +26,31 @@
     </tbody>
 </table>
 
+<h2>Attachments</h2>
+@if($invoice->attachments->isEmpty())
+    <p>No attachments. Upload a file below.</p>
+@else
+    <ul>
+        @foreach($invoice->attachments as $att)
+            <li>
+                <a href="{{ route('invoices.attachments.download', [$invoice, $att]) }}">{{ $att->original_name }}</a>
+                ({{ number_format($att->size / 1024, 1) }} KB)
+                <form method="post" action="{{ route('invoices.attachments.destroy', [$invoice, $att]) }}" style="display:inline;" onsubmit="return confirm('Remove this file?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger" style="padding:0.2rem 0.4rem;font-size:0.75rem;">Remove</button>
+                </form>
+            </li>
+        @endforeach
+    </ul>
+@endif
+
+<form method="post" action="{{ route('invoices.attachments.store', $invoice) }}" enctype="multipart/form-data" style="margin-top:0.5rem;">
+    @csrf
+    <input type="file" name="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif" required>
+    <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+
 <p style="margin-top:1.5rem;">
     <a href="{{ route('invoices.edit', $invoice) }}" class="btn btn-primary">Edit invoice</a>
     <a href="{{ route('invoices.index') }}" class="btn">Back to list</a>
