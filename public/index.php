@@ -1,5 +1,10 @@
 <?php
 
+// Suppress PHP 8.5+ PDO deprecation notices from framework until Laravel supports it
+if (PHP_VERSION_ID >= 80500) {
+    error_reporting(E_ALL & ~E_DEPRECATED);
+}
+
 use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
@@ -9,8 +14,6 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 }
 
 require __DIR__.'/../vendor/autoload.php';
-
-(new Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables)->bootstrap();
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
